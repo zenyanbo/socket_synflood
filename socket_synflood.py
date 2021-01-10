@@ -23,6 +23,7 @@ def send(src_ip,src_port,dst_ip,dst_port,count=1):
     tcp.set_th_win(20000)#设置Window Size
     ip.contains(tcp)
     ip.calculate_checksum()
+    #若循环出错，退出二次循环
     try:
         while 1:
             s.sendto(ip.get_packet(),(dst_ip,dst_port))
