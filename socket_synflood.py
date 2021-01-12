@@ -4,7 +4,7 @@ import random
 import multiprocessing
 import sys
 
-def send(src_ip,src_port,dst_ip,dst_port,count=1):
+def send(src_ip,src_port,dst_ip,dst_port):
     s = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_RAW)
     ip = impacket.ImpactPacket.IP()
     tcp = impacket.ImpactPacket.TCP()
