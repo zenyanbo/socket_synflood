@@ -1,12 +1,8 @@
 import socket
 import impacket.ImpactPacket
-import warnings
 import random
-import threading
 import multiprocessing
 import sys
-
-warnings.filterwarnings("ignore")
 
 def send(src_ip,src_port,dst_ip,dst_port,count=1):
     s = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_RAW)
